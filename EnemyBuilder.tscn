@@ -1,0 +1,11 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://EnemyBuilder.gd" type="Script" id=1]
+[ext_resource path="res://Nodes/Enemy/Components/SingleBarrelGunFront.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Nodes/Enemy/Components/LeftAngledGunComponent.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Enemy/Components/RightAngledGunComponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Enemy/Components/ShieldComponent.tscn" type="PackedScene" id=5]
+
+[node name="EnemyBuilder" type="Node"]
+script = ExtResource( 1 )
+components = [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ) ]

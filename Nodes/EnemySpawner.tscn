@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Nodes/EnemySpawner.gd" type="Script" id=1]
+[ext_resource path="res://Nodes/Enemy/Test/TestEnemy.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Sprites/Spawner.png" type="Texture" id=3]
+[ext_resource path="res://EnemyBuilder.tscn" type="PackedScene" id=4]
+
+[node name="EnemySpawner" type="Node2D"]
+script = ExtResource( 1 )
+velocity = Vector2( 200, 0 )
+available_enemies = [ ExtResource( 2 ) ]
+
+[node name="DebugSprite" type="Sprite" parent="."]
+texture = ExtResource( 3 )
+
+[node name="SpawnCooldown" type="Timer" parent="."]
+wait_time = 3.5
+autostart = true
+
+[node name="EnemyBuilder" parent="." instance=ExtResource( 4 )]
+[connection signal="timeout" from="SpawnCooldown" to="." method="_on_SpawnCooldown_timeout"]

@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Nodes/Enemy/EnemyCore.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Nodes/Enemy/Components/SingleBarrelGunFront.tscn" type="PackedScene" id=2]
+
+[node name="TestEnemy" type="Node2D"]
+
+[node name="EnemyCore" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 0 )
+
+[node name="SingleBarrelGunFront" parent="EnemyCore" instance=ExtResource( 2 )]
+position = Vector2( 8, 0 )
+
+[node name="SingleBarrelGunFront2" parent="EnemyCore" instance=ExtResource( 2 )]
+position = Vector2( -8, 0 )
