@@ -1,7 +1,9 @@
 extends Node
 var enemy_frame_scene = preload("res://Nodes/Enemy/EnemyFrame.tscn")
 var component_limit = 4
+var current_id = 0
 export (Array,PackedScene) var components
+
 func _ready():
 	pass
 	

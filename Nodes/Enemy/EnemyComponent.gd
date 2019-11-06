@@ -5,16 +5,20 @@ signal death(component)
 # var a = 2
 # var b = "text"
 export (int) var hp = 1
-
+var frame
+var id
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	for child in $Behaviour.get_children():
+		child.frame = frame
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func act(delta = 0):
 	for child in $Behaviour.get_children():
 		child.act(delta)
 
+func deactivate():
+	queue_free()
 
 
 func _on_Area2D_area_entered(area):

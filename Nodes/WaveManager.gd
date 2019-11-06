@@ -3,10 +3,14 @@ extends Node2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+const ENEMIES_PER_GENERATION = 15
 
 # Called when the node enters the scene tree for the first tim
 export (Vector2) var velocity = Vector2()
 export (Array,PackedScene) var available_enemies = []
+var current_generation = 0 
+var generation_enemies = []
+var generation_enemy_death_count = 0
 func _ready():
 	pass # Replace with function body.
 
@@ -27,8 +31,24 @@ func spawn_random_enemy():
 	#
 	get_tree().get_root().get_node("Main").add_child(enemy)
 	enemy.global_position = enemy_pos
+	enemy.connect("death",self,"on_enemy_death")
+	generation_enemies.append(enemy)
 	return 
 
 func _on_SpawnCooldown_timeout():
 	spawn_random_enemy()
 	pass # Replace with function body.
+	
+func on_enemy_death():
+	generation_enemy_death_count += 1
+	if(generation_enemy_death_count == ENEMIES_PER_GENERATION):
+		generation_end()
+
+func generation_end():
+	#TODO
+	generation_enemy_death_count = 0
+	apply_evolution()
+	
+func apply_evolution():
+	#TODO
+	pass

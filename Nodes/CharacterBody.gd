@@ -1,5 +1,4 @@
 extends KinematicBody2D
-
 export (Vector2) var acceleration = Vector2()
 export (int) var angular_acceleration
 export (PackedScene) var projectile 
@@ -12,6 +11,7 @@ export (Vector2) var max_velocity = Vector2(100,10)
 export (float) var max_angular_velocity = 5
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	PlayerTracker.player = self
 	pass # Replace with function body.
 
 func _physics_process(delta):

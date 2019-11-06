@@ -4,7 +4,7 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
-
+var frame
 func act(delta = 0):
 	pass
 # Called every frame. 'delta' is the elapsed time since the previous frame.

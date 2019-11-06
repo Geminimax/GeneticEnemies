@@ -41,6 +41,7 @@ func shoot_projectile():
 	proj.direction = direction
 	proj.move_speed = move_speed
 	add_child(proj)
+	proj.connect("destroy", frame, "on_projectile_destroy")
 	proj.global_position = pos.global_position 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

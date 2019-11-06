@@ -19,6 +19,10 @@ config/name="GeneticEnemies"
 run/main_scene="res://Scenes/Main.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+PlayerTracker="*res://Nodes/Globals/PlayerTracker.tscn"
+
 [display]
 
 window/size/width=240

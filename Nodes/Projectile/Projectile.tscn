@@ -14,3 +14,4 @@ autostart = true
 [node name="Hitbox" type="Area2D" parent="."]
 [connection signal="timeout" from="Lifetime" to="." method="_on_Lifetime_timeout"]
 [connection signal="area_entered" from="Hitbox" to="." method="_on_Hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
