@@ -7,7 +7,7 @@ export (Array,PackedScene) var components
 func _ready():
 	pass
 	
-func build():
+func build_random():
 	randomize()
 	var enemy = new_enemy()
 	enemy.global_position = Vector2(100,0)

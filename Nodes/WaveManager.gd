@@ -4,7 +4,7 @@ extends Node2D
 # var a = 2
 # var b = "text"
 const ENEMIES_PER_GENERATION = 15
-
+const BEST_ENEMIES_COUNT = 5
 # Called when the node enters the scene tree for the first tim
 export (Vector2) var velocity = Vector2()
 export (Array,PackedScene) var available_enemies = []
@@ -26,7 +26,7 @@ func _physics_process(delta):
 
 func spawn_random_enemy():
 	#var chosen_enemy = available_enemies[randi()%available_enemies.size()]
-	var enemy = $EnemyBuilder.build()
+	var enemy = $EnemyBuilder.build_random()
 	var enemy_pos = global_position
 	#
 	get_tree().get_root().get_node("Main").add_child(enemy)
@@ -50,5 +50,20 @@ func generation_end():
 	apply_evolution()
 	
 func apply_evolution():
+	var best_enemies = get_best_genes()
+	
+	pass
+
+func pairwise_crossover(enemy_a,enemy_b):
 	#TODO
 	pass
+	
+func get_best_genes():
+	generation_enemies.sort_custom(self, "sort_enemies")
+	var best_enemies = []
+	for i in range(BEST_ENEMIES_COUNT):
+		best_enemies.append(generation_enemies[generation_enemies.size() - (i + 1)])
+	return best_enemies
+
+func sort_enemies(a,b):
+	return a.get_score() < b.get_score()
