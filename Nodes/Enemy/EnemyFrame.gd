@@ -1,5 +1,4 @@
 extends Node2D
-
 signal death
 const DISTANCES_CYCLE_SIZE = 5
 const SHOOT_SCORE_WEIGHT = 10

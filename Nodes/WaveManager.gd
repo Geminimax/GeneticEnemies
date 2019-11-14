@@ -50,13 +50,32 @@ func generation_end():
 	apply_evolution()
 	
 func apply_evolution():
-	var best_enemies = get_best_genes()
+	var best_enemies = get_best_genes()	
 	
 	pass
 
-func pairwise_crossover(enemy_a,enemy_b):
-	#TODO
-	pass
+func pair_crossover(enemy_a,enemy_b):
+	var dice = rand_range(0,1)
+	var genome = {}
+	#Core genome
+	if rand_range(0,1) >= 0.5:
+		genome["core"] = enemy_a.genome["core"]
+	else:
+		genome["core"] = enemy_b.genome["core"]
+	
+	#Postions
+	#Different frame sizes possible??
+	genome["body"] = []
+	for x in range(enemy_a.frame_size):
+		var line = []
+		for y in range(enemy_a.frame_size):
+			if rand_range(0,1) >= 0.5:
+				line.append(enemy_a.genome["body"][x][y])
+			else:
+				line.append(enemy_b.genome["body"][x][y])
+		genome["body"].append(line)
+	
+	return genome
 	
 func get_best_genes():
 	generation_enemies.sort_custom(self, "sort_enemies")
