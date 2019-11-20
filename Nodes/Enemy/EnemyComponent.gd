@@ -6,7 +6,7 @@ signal death(component)
 # var b = "text"
 export (int) var hp = 1
 var frame
-var id
+var id_component
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	for child in $Behaviour.get_children():

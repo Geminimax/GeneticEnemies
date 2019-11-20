@@ -14,7 +14,7 @@ available_enemies = [ ExtResource( 2 ) ]
 texture = ExtResource( 3 )
 
 [node name="SpawnCooldown" type="Timer" parent="."]
-wait_time = 3.5
+wait_time = 2.5
 autostart = true
 
 [node name="EnemyBuilder" parent="." instance=ExtResource( 4 )]

@@ -30,19 +30,25 @@ func init_matrix(width,height):
 	return matrix
 
 func initialize():
-		components = init_matrix(frame_size,frame_size)
-		add_core(randi() % frame_size, randi() % frame_size)
+	components = init_matrix(frame_size,frame_size)
+	
 		
 
 func add_core(x,y):
 	core_instance = core.instance()
 	core_position = Vector2(x,y)
-	add_component(x,y, core_instance)
+	$Components.add_child(core_instance)
+	core_instance.global_position = core_position * grid_size
+	core_instance.frame = self
+	core_instance.connect("death",self,"on_component_death")
 	
 func add_component(x,y, instance):
+	if(Vector2(x,y) == core_position):
+		return
+	
 	$Components.add_child(instance)
 	instance.global_position = Vector2(x,y) * grid_size
-	components[int(x)][int(y)] = instance.name
+	components[int(x)][int(y)] = instance.id_component
 	component_list.append(instance)
 	component_count += 1
 	instance.frame = self
@@ -52,16 +58,14 @@ func get_empty_spaces():
 	var empty_list = []
 	for i in range(frame_size):
 		for j in range(frame_size):
-			if components[i][j] == null:
+			if components[i][j] == null and Vector2(i,j) != core_position :
 				empty_list.append(Vector2(i,j))
-			else:
-				print(components[i][j])
 	return empty_list
 	
 func _on_Timer_timeout():
-		if current_component < component_list.size():
-			component_list[current_component].act()
-			current_component = (current_component + 1) % component_list.size()
+	if current_component < component_list.size():
+		component_list[current_component].act()
+		current_component = (current_component + 1) % component_list.size()
 
 func _physics_process(delta):
 	if alive:
@@ -69,23 +73,25 @@ func _physics_process(delta):
 	global_position += velocity * delta
 
 func on_component_death(component):
-	print("Component died!")
 	if(component == core_instance):
-		print("Core dead!")
 		death()
-	component_list.remove(component_list.find(component))
+	else:
+		component_list.remove(component_list.find(component))
 	component.deactivate()
 
 func death():
-	print(time_alive)
+	for component in component_list:
+		on_component_death(component)
 	encode_to_genome()
 	deactivate()
+
 
 func deactivate():
 	set_process(false)
 	set_physics_process(false)
 	visible = false
 	emit_signal("death")
+
 
 func on_projectile_destroy(minimum_distance):
 	if(distances.size() < DISTANCES_CYCLE_SIZE):
@@ -114,13 +120,14 @@ func encode_to_genome():
 	genome["core"] = core_position
 	genome["body"] = []
 	for i in range(frame_size):
+		var line = []
 		for j in range(frame_size):
 			if components[i][j] == null:
-				genome["body"].append(str(Vector2(i,j)) + "-null")
+				line.append(-1)
 			else:
-				genome["body"].append(str(Vector2(i,j)) + "-" + components[i][j])
-	print(genome)
-	pass
+				line.append(components[i][j])
+		genome["body"].append(line)
+	return genome
 	
 
 func _on_VisibilityNotifier2D_screen_exited():
