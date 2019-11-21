@@ -6,9 +6,11 @@ extends "res://Nodes/Projectile/SimpleProjectile.gd"
 signal destroy(minimum_distance)
 var minimum_distance_to_player = -1
 var player
+export(float) var time_alive = 2 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = PlayerTracker.player 
+	$Lifetime.start(time_alive)
 	pass # Replace with function body.
 
 func _process(delta):

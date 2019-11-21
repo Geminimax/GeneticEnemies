@@ -39,7 +39,8 @@ func shoot_projectile():
 	var proj = projectile.instance()
 	var pos = $SpawnPoint
 	proj.direction = direction
-	proj.move_speed = move_speed
+	proj.move_speed = move_speed * frame.bullet_speed_multi
+	proj.time_alive = proj.time_alive * frame.bullet_range_multi
 	add_child(proj)
 	proj.connect("destroy", frame, "on_projectile_destroy")
 	proj.global_position = pos.global_position 

@@ -10,6 +10,6 @@
 texture = ExtResource( 2 )
 
 [node name="GunBehaviour" parent="Behaviour" index="0" instance=ExtResource( 3 )]
-shoot_cooldown = 2.5
+shoot_cooldown = 2.0
 direction = Vector2( -0.5, 0.5 )
-move_speed = 75
+move_speed = 45

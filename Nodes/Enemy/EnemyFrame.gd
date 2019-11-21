@@ -18,6 +18,13 @@ var time_alive = 0
 var alive = true
 var distances = []
 
+#DONT CHANGE THESE NAMES BRO!
+var bullet_range_multi = 1
+var bullet_speed_multi = 1
+var cycle_speed_multi = 1
+
+export(float) var cycle_base_time = 0.3
+
 export (int) var frame_size = 4
 
 func init_matrix(width,height):
@@ -31,9 +38,11 @@ func init_matrix(width,height):
 
 func initialize():
 	components = init_matrix(frame_size,frame_size)
-	
 		
 
+func _ready():
+	$Timer.start(cycle_base_time * cycle_speed_multi)
+	
 func add_core(x,y):
 	core_instance = core.instance()
 	core_position = Vector2(x,y)
@@ -63,9 +72,11 @@ func get_empty_spaces():
 	return empty_list
 	
 func _on_Timer_timeout():
-	if current_component < component_list.size():
+	if !component_list.empty():
+		current_component = current_component % component_list.size()
 		component_list[current_component].act()
 		current_component = (current_component + 1) % component_list.size()
+	$Timer.start(cycle_base_time * cycle_speed_multi)
 
 func _physics_process(delta):
 	if alive:

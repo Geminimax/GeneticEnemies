@@ -11,6 +11,7 @@ var id_component
 func _ready():
 	for child in $Behaviour.get_children():
 		child.frame = frame
+		child.initialize()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func act(delta = 0):
@@ -18,6 +19,9 @@ func act(delta = 0):
 		child.act(delta)
 
 func deactivate():
+	for child in $Behaviour.get_children():
+		child.frame = frame
+		child.deactivate()
 	queue_free()
 
 

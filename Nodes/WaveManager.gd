@@ -3,8 +3,8 @@ extends Node2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-const ENEMIES_PER_GENERATION = 5
-const BEST_ENEMIES_COUNT = 5
+const ENEMIES_PER_GENERATION = 6
+const BEST_ENEMIES_COUNT = 3
 # Called when the node enters the scene tree for the first tim
 export (Vector2) var velocity = Vector2()
 export (Array,PackedScene) var available_enemies = []

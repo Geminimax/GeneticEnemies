@@ -1,9 +1,16 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Nodes/WaveManager.gd" type="Script" id=1]
 [ext_resource path="res://Nodes/Enemy/Test/TestEnemy.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Sprites/Spawner.png" type="Texture" id=3]
 [ext_resource path="res://EnemyBuilder.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Enemy/Components/SingleBarrelGunFront.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Nodes/Enemy/Components/LeftAngledGunComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Nodes/Enemy/Components/RightAngledGunComponent.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Nodes/Enemy/Components/ShieldComponent.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Nodes/Enemy/Components/BulletSpeedUpComponent.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Nodes/Enemy/Components/CycleSpeedComponent.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Nodes/Enemy/Components/RangeUpComponent.tscn" type="PackedScene" id=11]
 
 [node name="WaveManager" type="Node2D"]
 script = ExtResource( 1 )
@@ -18,4 +25,5 @@ wait_time = 2.5
 autostart = true
 
 [node name="EnemyBuilder" parent="." instance=ExtResource( 4 )]
+components = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ]
 [connection signal="timeout" from="SpawnCooldown" to="." method="_on_SpawnCooldown_timeout"]
