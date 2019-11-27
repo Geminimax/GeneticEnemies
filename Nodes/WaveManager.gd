@@ -69,6 +69,10 @@ func generation_end():
 func output_data(output_file_name):
 	var data = File.new()
 	data.open(output_file_name, File.WRITE)
+	data.store_string("Mutation chance is :" + str(mutation_chance) + "\n")
+	data.store_string("Population size:" + str(ENEMIES_PER_GENERATION) + "\n")
+	data.store_string("Elitist individual count:" + str(ELITISM_COUNT) + "\n")
+	data.store_string("Selection type:" + str(selection) + "\n")
 	data.store_string(str(average_score_for_generation))
 	data.close()
 	
