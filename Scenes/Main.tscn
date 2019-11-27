@@ -10,6 +10,7 @@ position = Vector2( 0.922089, 8.91338 )
 position = Vector2( 250.688, 231.196 )
 
 [node name="Player" parent="PlayerController" index="0"]
+editor/display_folded = true
 position = Vector2( -118.35, 51.4565 )
 
 [node name="EnemySpawner" parent="." instance=ExtResource( 2 )]

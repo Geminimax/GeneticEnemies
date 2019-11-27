@@ -20,9 +20,8 @@ func act(delta = 0):
 
 func deactivate():
 	for child in $Behaviour.get_children():
-		child.frame = frame
 		child.deactivate()
-	queue_free()
+	call_deferred("queue_free")
 
 
 func _on_Area2D_area_entered(area):

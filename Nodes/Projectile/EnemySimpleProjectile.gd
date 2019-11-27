@@ -4,6 +4,8 @@ extends "res://Nodes/Projectile/SimpleProjectile.gd"
 # var a = 2
 # var b = "text"
 signal destroy(minimum_distance)
+signal player_hit
+
 var minimum_distance_to_player = -1
 var player
 export(float) var time_alive = 2 
@@ -23,3 +25,7 @@ func _process(delta):
 func destroy():
 	emit_signal("destroy",minimum_distance_to_player)
 	.destroy()
+
+func on_collision():
+	emit_signal("player_hit")
+	.on_collision()

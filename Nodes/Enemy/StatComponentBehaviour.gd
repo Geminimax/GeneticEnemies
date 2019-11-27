@@ -14,6 +14,7 @@ func initialize():
 func deactivate():
 	var stat_value = frame.get(stat)
 	frame.set(stat, stat_value - amount)
+	queue_free()
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

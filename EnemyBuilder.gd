@@ -23,6 +23,8 @@ func build_random():
 func new_enemy():
 	var enemy = enemy_frame_scene.instance()
 	enemy.initialize()
+	enemy.enemy_id = current_id
+	current_id += 1
 	return enemy
 	
 func get_component(index):
@@ -30,8 +32,11 @@ func get_component(index):
 	component.id_component = index
 	return component
 	
+func get_random_component_index():
+	return random_list_index(components)
+	
 func get_random_component():
-	var index = random_list_index(components)
+	var index = get_random_component_index()
 	return get_component(index)
 
 func random_in_list(list):

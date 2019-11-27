@@ -4,7 +4,7 @@
 [ext_resource path="res://Sprites/shield.png" type="Texture" id=2]
 
 [node name="ShieldComponent" instance=ExtResource( 1 )]
-hp = 5
+hp = 3
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )

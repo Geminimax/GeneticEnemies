@@ -9,6 +9,7 @@ var angle = 0
 
 export (Vector2) var max_velocity = Vector2(100,10)
 export (float) var max_angular_velocity = 5
+var damage_taken = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	PlayerTracker.player = self
@@ -39,6 +40,8 @@ func shoot():
 	
 	get_parent().get_parent().add_child(proj)
 	proj.position = pos.global_position 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+
+func _on_Area2D_area_entered(area):
+	damage_taken += area.get_parent().damage
+	print("Damage taken!")
+	print("Total damage taken =" + str(damage_taken))

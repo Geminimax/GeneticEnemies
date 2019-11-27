@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Nodes/Player/PlayerController.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Nodes/Player/AimingAIController.gd" type="Script" id=2]
+
+[node name="AimingAIController" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+
+[node name="ReactionTimer" type="Timer" parent="." index="2"]
+wait_time = 0.5
+one_shot = true
+[connection signal="timeout" from="ReactionTimer" to="." method="_on_ReactionTimer_timeout"]
+
+[editable path="Player"]

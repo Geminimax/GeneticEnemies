@@ -11,4 +11,4 @@ texture = ExtResource( 2 )
 
 [node name="StatComponentBehaviour" parent="Behaviour" index="0" instance=ExtResource( 3 )]
 stat = "bullet_speed_multi"
-amount = 0.15
+amount = 0.25

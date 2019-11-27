@@ -4,7 +4,8 @@ const DISTANCES_CYCLE_SIZE = 5
 const SHOOT_SCORE_WEIGHT = 10
 const TIME_ALIVE_SCORE_WEIGHT = 0.75
 const SHOOT_SCORE_DIST_DECAY_POWER = 2
-
+const COMPONENT_COUNT_SCORE_WEIGTH = 50
+const PLAYER_HIT_SCORE_WEIGHT = 1
 var grid_size = 8
 var core = preload("res://Nodes/Enemy/EnemyCore.tscn")
 var components = []
@@ -13,18 +14,17 @@ var current_component = 0
 var core_position 
 var component_count = 0
 var core_instance
-var velocity = Vector2(0,40)
+var velocity = Vector2(0,45)
 var time_alive = 0
 var alive = true
 var distances = []
-
+var enemy_id
+var player_hit_count = 0
 #DONT CHANGE THESE NAMES BRO!
 var bullet_range_multi = 1
 var bullet_speed_multi = 1
 var cycle_speed_multi = 1
-
-export(float) var cycle_base_time = 0.3
-
+var active_components = []
 export (int) var frame_size = 4
 
 func init_matrix(width,height):
@@ -39,24 +39,22 @@ func init_matrix(width,height):
 func initialize():
 	components = init_matrix(frame_size,frame_size)
 		
-
-func _ready():
-	$Timer.start(cycle_base_time * cycle_speed_multi)
 	
 func add_core(x,y):
 	core_instance = core.instance()
 	core_position = Vector2(x,y)
 	$Components.add_child(core_instance)
-	core_instance.global_position = core_position * grid_size
+	core_instance.position = core_position * grid_size
 	core_instance.frame = self
-	core_instance.connect("death",self,"on_component_death")
+	component_list.append(core_instance)
+	core_instance.connect("death",self,"on_core_death")
 	
 func add_component(x,y, instance):
 	if(Vector2(x,y) == core_position):
 		return
 	
 	$Components.add_child(instance)
-	instance.global_position = Vector2(x,y) * grid_size
+	instance.position = Vector2(x,y) * grid_size
 	components[int(x)][int(y)] = instance.id_component
 	component_list.append(instance)
 	component_count += 1
@@ -71,39 +69,40 @@ func get_empty_spaces():
 				empty_list.append(Vector2(i,j))
 	return empty_list
 	
-func _on_Timer_timeout():
-	if !component_list.empty():
-		current_component = current_component % component_list.size()
-		component_list[current_component].act()
-		current_component = (current_component + 1) % component_list.size()
-	$Timer.start(cycle_base_time * cycle_speed_multi)
-
+func on_end_shooting():
+	$GlobalCooldown.start()
+	
 func _physics_process(delta):
 	if alive:
 		time_alive += delta
 	global_position += velocity * delta
 
 func on_component_death(component):
-	if(component == core_instance):
-		death()
-	else:
-		component_list.remove(component_list.find(component))
+	component_list.remove(component_list.find(component))
+	#component_list.erase(component)
 	component.deactivate()
 
+func on_core_death(component):
+	death()
+	
 func death():
-	for component in component_list:
-		on_component_death(component)
-	encode_to_genome()
+	$GlobalCooldown.stop()
+	for i in range(component_list.size() - 1, -1, -1):
+		on_component_death(component_list[i])
+	component_list = []
 	deactivate()
 
 
 func deactivate():
+	$GlobalCooldown.stop()
+	
 	set_process(false)
 	set_physics_process(false)
-	visible = false
-	emit_signal("death")
-
-
+	#visible = false
+	if(alive):
+		emit_signal("death")
+		alive = false
+	
 func on_projectile_destroy(minimum_distance):
 	if(distances.size() < DISTANCES_CYCLE_SIZE):
 		distances.append(minimum_distance)
@@ -113,15 +112,18 @@ func on_projectile_destroy(minimum_distance):
 	distances.sort()
 	
 func get_score():
-	var score = time_alive_score() + proj_distance_score()
-	print("Score is :" + str(score))
+	var score = time_alive_score() + proj_distance_score() + alive_components_score()
+	
 	return score
 
+func alive_components_score():
+	return (component_list.size() / component_count) * COMPONENT_COUNT_SCORE_WEIGTH
+	
 func proj_distance_score():
 	var total_value = 0
 	for dist in distances:
 		total_value += SHOOT_SCORE_WEIGHT/pow(dist,SHOOT_SCORE_DIST_DECAY_POWER)
-	return total_value
+	return total_value + (PLAYER_HIT_SCORE_WEIGHT*player_hit_count)
 
 func time_alive_score():
 	return time_alive * TIME_ALIVE_SCORE_WEIGHT
@@ -142,5 +144,21 @@ func encode_to_genome():
 	
 
 func _on_VisibilityNotifier2D_screen_exited():
-	print("Out of screen!")
-	death()
+	deactivate()
+
+
+func _on_GlobalCooldown_timeout():
+	activate_next_component()
+func on_cooldown():
+	activate_next_component()
+	
+func activate_next_component():
+	if !active_components.empty():
+		current_component = current_component % active_components.size()
+		active_components[current_component].act()
+		current_component = (current_component + 1) % active_components.size()
+	else:
+		$GlobalCooldown.start()
+	
+func on_player_hit():
+	player_hit_count += 1

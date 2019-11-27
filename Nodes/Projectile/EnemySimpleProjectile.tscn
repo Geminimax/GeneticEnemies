@@ -5,10 +5,11 @@
 [ext_resource path="res://Sprites/bullet.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 2.57527, 2.36013 )
+extents = Vector2( 1.79223, 1.77873 )
 
 [node name="EnemySimpleProjectile" index="0" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
+time_alive = 0.75
 
 [node name="Sprite" parent="." index="0"]
 rotation = 3.14159

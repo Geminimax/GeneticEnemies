@@ -4,7 +4,7 @@ extends Node2D
 # var a = 2
 # var b = "text"
 
-var frame
+var frame setget set_frame
 func initialize():
 	pass
 func act(delta = 0):
@@ -15,3 +15,5 @@ func deactivate():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
+func set_frame(value):
+	frame = value

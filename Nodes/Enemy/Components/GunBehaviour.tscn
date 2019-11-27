@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Nodes/Enemy/ComponentBehaviour.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Nodes/Enemy/GunBehaviour.gd" type="Script" id=2]
+[ext_resource path="res://Nodes/Enemy/Components/GunBehaviour.gd" type="Script" id=2]
 [ext_resource path="res://Nodes/Projectile/EnemySimpleProjectile.tscn" type="PackedScene" id=3]
 
 [node name="GunBehaviour" instance=ExtResource( 1 )]
@@ -16,5 +16,10 @@ one_shot = true
 one_shot = true
 
 [node name="SpawnPoint" type="Position2D" parent="." index="2"]
+
+[node name="InitialCooldown" type="Timer" parent="." index="3"]
+wait_time = 0.25
+one_shot = true
 [connection signal="timeout" from="Cooldown" to="." method="_on_Cooldown_timeout"]
 [connection signal="timeout" from="BurstTimer" to="." method="_on_BurstTimer_timeout"]
+[connection signal="timeout" from="InitialCooldown" to="." method="_on_InitialCooldown_timeout"]

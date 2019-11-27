@@ -69,6 +69,10 @@ shoot={
 2d_physics/layer_3="Enemy"
 2d_physics/layer_4="EnemyAttack"
 
+[logging]
+
+file_logging/enable_file_logging=true
+
 [rendering]
 
 quality/2d/use_pixel_snap=true

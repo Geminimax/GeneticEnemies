@@ -10,4 +10,4 @@
 texture = ExtResource( 2 )
 
 [node name="StatComponentBehaviour" parent="Behaviour" index="0" instance=ExtResource( 3 )]
-amount = 0.25
+amount = 0.3

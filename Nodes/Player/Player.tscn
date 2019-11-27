@@ -4,9 +4,12 @@
 [ext_resource path="res://Nodes/Projectile/PlayerProjectile.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Sprites/ArrowUp.png" type="Texture" id=3]
 
-[node name="Player" index="0" instance=ExtResource( 1 )]
+[node name="Player" instance=ExtResource( 1 )]
 projectile = ExtResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="." index="0"]
 rotation = 3.14159
 texture = ExtResource( 3 )
+
+[node name="Area2D" type="Area2D" parent="." index="2"]
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]

@@ -1,29 +1,45 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://Nodes/WaveManager.gd" type="Script" id=1]
-[ext_resource path="res://Nodes/Enemy/Test/TestEnemy.tscn" type="PackedScene" id=2]
-[ext_resource path="res://Sprites/Spawner.png" type="Texture" id=3]
-[ext_resource path="res://EnemyBuilder.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Nodes/Enemy/Components/SingleBarrelGunFront.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Nodes/Enemy/Components/LeftAngledGunComponent.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Nodes/Enemy/Components/RightAngledGunComponent.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Nodes/Enemy/Components/ShieldComponent.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Nodes/Enemy/Components/BulletSpeedUpComponent.tscn" type="PackedScene" id=9]
-[ext_resource path="res://Nodes/Enemy/Components/CycleSpeedComponent.tscn" type="PackedScene" id=10]
-[ext_resource path="res://Nodes/Enemy/Components/RangeUpComponent.tscn" type="PackedScene" id=11]
+[ext_resource path="res://EnemyBuilder.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Nodes/Enemy/Components/SingleBarrelGunFront.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Nodes/Enemy/Components/LeftAngledGunComponent.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Nodes/Enemy/Components/RightAngledGunComponent.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Nodes/Enemy/Components/ShieldComponent.tscn" type="PackedScene" id=6]
+[ext_resource path="res://Nodes/Enemy/Components/BulletSpeedUpComponent.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Nodes/Enemy/Components/RangeUpComponent.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Nodes/Enemy/Components/ShotgunComponent.tscn" type="PackedScene" id=9]
+[ext_resource path="res://Fonts/8-BIT WONDER.TTF" type="DynamicFontData" id=10]
+
+[sub_resource type="DynamicFont" id=1]
+size = 8
+font_data = ExtResource( 10 )
 
 [node name="WaveManager" type="Node2D"]
 script = ExtResource( 1 )
 velocity = Vector2( 200, 0 )
-available_enemies = [ ExtResource( 2 ) ]
-
-[node name="DebugSprite" type="Sprite" parent="."]
-texture = ExtResource( 3 )
 
 [node name="SpawnCooldown" type="Timer" parent="."]
-wait_time = 2.5
+wait_time = 2.1
 autostart = true
 
-[node name="EnemyBuilder" parent="." instance=ExtResource( 4 )]
-components = [ ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ) ]
+[node name="EnemyBuilder" parent="." instance=ExtResource( 2 )]
+components = [ ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ) ]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -120.0
+margin_top = 303.0
+margin_right = 31.0
+margin_bottom = 319.0
+custom_fonts/normal_font = SubResource( 1 )
+text = "Generation : "
+
+[node name="WaveDelay" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 [connection signal="timeout" from="SpawnCooldown" to="." method="_on_SpawnCooldown_timeout"]
+[connection signal="timeout" from="WaveDelay" to="." method="_on_WaveDelay_timeout"]
