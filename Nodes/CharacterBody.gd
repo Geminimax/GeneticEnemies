@@ -43,5 +43,3 @@ func shoot():
 
 func _on_Area2D_area_entered(area):
 	damage_taken += area.get_parent().damage
-	print("Damage taken!")
-	print("Total damage taken =" + str(damage_taken))

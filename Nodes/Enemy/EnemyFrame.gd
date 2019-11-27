@@ -78,7 +78,9 @@ func _physics_process(delta):
 	global_position += velocity * delta
 
 func on_component_death(component):
-	component_list.remove(component_list.find(component))
+	var index = component_list.find(component)
+	if index != -1:
+		component_list.remove(index)
 	#component_list.erase(component)
 	component.deactivate()
 

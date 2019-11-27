@@ -3,9 +3,10 @@ extends Node2D
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+enum selectionType{TOURNAMENT,ROULETTE}
 export (int) var ENEMIES_PER_GENERATION = 10
 export (int) var ELITISM_COUNT = 2
-export (int) var TOURNAMENT_SIZE = 4
+export (int) var TOURNAMENT_SIZE = 3
 # Called when the node enters the scene tree for the first tim
 export (Vector2) var velocity = Vector2()
 export (Array,PackedScene) var available_enemies = []
@@ -14,8 +15,9 @@ var generation_enemies = []
 var generation_enemy_death_count = 0 
 var prepared_enemies = []
 var mutation_chance = 0.05
-
-func _ready():
+var selection = selectionType.TOURNAMENT
+var average_score_for_generation = []
+func start():
 	print("Starting run")
 	print("Mutation chance is :" + str(mutation_chance))
 	print("Population size:" + str(ENEMIES_PER_GENERATION))
@@ -28,11 +30,11 @@ func initial_generation():
 		prepared_enemies.append(prepare_random_enemy())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-	
+
 func spawn_enemy(enemy):
 	var enemy_pos = Vector2()
 	enemy_pos.x = rand_range(get_viewport_rect().size.x - 24,get_viewport_rect().position.x + 24)
-	get_tree().get_root().get_node("Main").add_child(enemy)
+	get_parent().add_child(enemy)
 	enemy.global_position = enemy_pos
 	enemy.connect("death",self,"on_enemy_death")
 	generation_enemies.append(enemy)
@@ -60,9 +62,15 @@ func generation_end():
 	for enemy in generation_enemies:
 		print("ID : " +  str(enemy.enemy_id) + " Fitness : " + str(enemy.get_score()))
 	print("AVERAGE FITNESS IS:" + str(get_total_fitness() / generation_enemies.size()))
+	average_score_for_generation.append(get_total_fitness() / generation_enemies.size())
 	generation_enemy_death_count = 0
 	$WaveDelay.start()
-	
+
+func output_data(output_file_name):
+	var data = File.new()
+	data.open(output_file_name, File.WRITE)
+	data.store_string(str(average_score_for_generation))
+	data.close()
 	
 func apply_evolution():
 	var elitist_enemies = get_best_genes(ELITISM_COUNT,generation_enemies)
@@ -125,8 +133,14 @@ func apply_mutation(genome,chance):
 				genome["body"][x][y] = $EnemyBuilder.get_random_component_index()
 
 func select_pair(enemy_list, total_fitness):
-	var enemy1 = tournament_selection(enemy_list,total_fitness)
-	var enemy2 = tournament_selection(enemy_list,total_fitness)
+	var enemy1
+	var enemy2
+	if selection == selectionType.TOURNAMENT:
+		enemy1 = tournament_selection(enemy_list,total_fitness)
+		enemy2 = tournament_selection(enemy_list,total_fitness)
+	else:
+		enemy1 = roulette_wheel_selection(enemy_list,total_fitness)
+		enemy2 = roulette_wheel_selection(enemy_list,total_fitness)
 	return [enemy1,enemy2]
 
 func roulette_wheel_selection(enemy_list,total_fitness):
@@ -142,7 +156,7 @@ func roulette_wheel_selection(enemy_list,total_fitness):
 func tournament_selection(enemy_list,total_fitness):
 	var tournament_list = enemy_list.duplicate()
 	tournament_list = select_random_from_list(TOURNAMENT_SIZE,tournament_list)
-	return get_best_genes(1,tournament_list)[0]
+	return get_best_enemy(tournament_list)
 	
 
 func select_random_from_list(amount,list):
@@ -159,7 +173,9 @@ func get_best_genes(count,list):
 	for i in range(count):
 		best_enemies.append(list[list.size() - (i + 1)].encode_to_genome())
 	return best_enemies
-
+func get_best_enemy(list):
+	list.sort_custom(self, "sort_enemies")
+	return list[list.size()-1]
 func sort_enemies(a,b):
 	return a.get_score() < b.get_score()
 
