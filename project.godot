@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="GeneticEnemies"
-run/main_scene="res://Scenes/PlayMain.tscn"
+run/main_scene="res://Scenes/InitialScene.tscn"
 config/icon="res://icon.png"
 
 [autoload]

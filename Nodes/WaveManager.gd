@@ -5,7 +5,7 @@ extends Node2D
 # var b = "text"
 enum selectionType{TOURNAMENT,ROULETTE}
 export (int) var ENEMIES_PER_GENERATION = 10
-export (int) var ELITISM_COUNT = 2
+export (int) var ELITISM_COUNT = 1
 export (int) var TOURNAMENT_SIZE = 3
 # Called when the node enters the scene tree for the first tim
 export (Vector2) var velocity = Vector2()
@@ -18,6 +18,7 @@ var mutation_chance = 0.05
 var selection = selectionType.TOURNAMENT
 var average_score_for_generation = []
 func start():
+	Engine.time_scale = 3.0
 	print("Starting run")
 	print("Mutation chance is :" + str(mutation_chance))
 	print("Population size:" + str(ENEMIES_PER_GENERATION))
@@ -61,8 +62,8 @@ func generation_end():
 	print("GENERATION " + str(current_generation) + " END!") 
 	for enemy in generation_enemies:
 		print("ID : " +  str(enemy.enemy_id) + " Fitness : " + str(enemy.get_score()))
-	print("AVERAGE FITNESS IS:" + str(get_total_fitness() / generation_enemies.size()))
-	average_score_for_generation.append(get_total_fitness() / generation_enemies.size())
+	print("AVERAGE FITNESS IS:" + str(get_total_fitness(generation_enemies) / generation_enemies.size()))
+	average_score_for_generation.append(get_total_fitness(generation_enemies) / generation_enemies.size())
 	generation_enemy_death_count = 0
 	$WaveDelay.start()
 
@@ -92,14 +93,14 @@ func apply_evolution():
 
 func get_enemy_pairs(enemy_list,pair_count):
 	var pairs = []
-	var total_fitness = get_total_fitness()
+	var total_fitness = get_total_fitness(generation_enemies)
 	for i in range(pair_count):
 		pairs.append(select_pair(enemy_list,total_fitness))
 	return pairs
 
-func get_total_fitness():
+func get_total_fitness(list):
 	var score = 0
-	for enemy in generation_enemies:
+	for enemy in list:
 		score += enemy.get_score()
 	return score
 
@@ -127,10 +128,12 @@ func pair_crossover(enemy_a,enemy_b):
 		genome["body"].append(line)
 	
 	#Mutation
-	apply_mutation(genome,mutation_chance)
+	apply_mutation(genome,mutation_chance,enemy_a.frame_size)
 	return genome
 	
-func apply_mutation(genome,chance):
+func apply_mutation(genome,chance,frame_size):
+	if rand_range(0,1) <= chance:
+		genome["core"] = Vector2(randi()%frame_size,randi()%frame_size)
 	for x in range(genome["body"].size()):
 		for y in range(genome["body"][x].size()):
 			if rand_range(0,1) <= chance:
@@ -140,11 +143,15 @@ func select_pair(enemy_list, total_fitness):
 	var enemy1
 	var enemy2
 	if selection == selectionType.TOURNAMENT:
+		var list = enemy_list.duplicate()
 		enemy1 = tournament_selection(enemy_list,total_fitness)
+		list.erase(enemy1)
 		enemy2 = tournament_selection(enemy_list,total_fitness)
 	else:
+		var list = enemy_list.duplicate()
 		enemy1 = roulette_wheel_selection(enemy_list,total_fitness)
-		enemy2 = roulette_wheel_selection(enemy_list,total_fitness)
+		list.erase(enemy1)
+		enemy2 = roulette_wheel_selection(list,get_total_fitness(list))
 	return [enemy1,enemy2]
 
 func roulette_wheel_selection(enemy_list,total_fitness):

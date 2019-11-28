@@ -11,6 +11,9 @@ position = Vector2( 109.503, -4.2605 )
 [node name="BasicAIController" parent="." instance=ExtResource( 2 )]
 position = Vector2( 124.16, 294.328 )
 
+[node name="Player" parent="BasicAIController" index="0"]
+max_velocity = Vector2( 125, 10 )
+
 [node name="CooldownTimer" parent="BasicAIController" index="1"]
 wait_time = 0.2
 
