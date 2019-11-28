@@ -26,5 +26,6 @@ func deactivate():
 
 func _on_Area2D_area_entered(area):
 	hp -= 1
+	frame.times_hit += 1
 	if hp <= 0:
 		emit_signal("death",self)

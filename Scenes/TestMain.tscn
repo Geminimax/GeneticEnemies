@@ -12,8 +12,11 @@ position = Vector2( 109.503, -4.2605 )
 position = Vector2( 79.6107, 252.764 )
 target_range = 6.0
 
+[node name="Player" parent="AimingAIController" index="0"]
+max_velocity = Vector2( 150, 10 )
+
 [node name="CooldownTimer" parent="AimingAIController" index="1"]
-wait_time = 0.2
+wait_time = 0.4
 
 [node name="ReactionTimer" parent="AimingAIController" index="2"]
 wait_time = 0.4

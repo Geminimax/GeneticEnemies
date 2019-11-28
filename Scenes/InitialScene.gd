@@ -36,7 +36,7 @@ func _on_MutationRate_value_changed(value):
 
 func _process(delta):
 	if Input.is_action_just_pressed("save"):
-		var directory = "C:\\Users\\Pichau\\Desktop\\PocTests\\"
+		var directory = "/home/hiago.alves/Desktop/POC"
 		var filename_id = "test_" + str(OS.get_unix_time()) + ".txt"
 		spawner.output_data(directory + filename_id)
 func _on_Start_pressed():

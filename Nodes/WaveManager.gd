@@ -17,6 +17,7 @@ var prepared_enemies = []
 var mutation_chance = 0.05
 var selection = selectionType.TOURNAMENT
 var average_score_for_generation = []
+var concentration = {}
 func start():
 	Engine.time_scale = 3.0
 	print("Starting run")
@@ -67,6 +68,7 @@ func generation_end():
 	generation_enemy_death_count = 0
 	$WaveDelay.start()
 
+
 func output_data(output_file_name):
 	var data = File.new()
 	data.open(output_file_name, File.WRITE)
@@ -110,7 +112,7 @@ func pair_crossover(enemy_a,enemy_b):
 	#Core genome
 	var enemy_a_genome = enemy_a.encode_to_genome()
 	var enemy_b_genome = enemy_b.encode_to_genome()
-	if rand_range(0,1) >= 0.5:
+	if rand_range(0,1) > 0.5:
 		genome["core"] = enemy_a_genome["core"]
 	else:
 		genome["core"] = enemy_b_genome["core"]
@@ -121,7 +123,7 @@ func pair_crossover(enemy_a,enemy_b):
 	for x in range(enemy_a.frame_size):
 		var line = []
 		for y in range(enemy_a.frame_size):
-			if rand_range(0,1) >= 0.5:
+			if rand_range(0,1) > 0.5:
 				line.append(enemy_a_genome["body"][x][y])
 			else:
 				line.append(enemy_b_genome["body"][x][y])
@@ -132,7 +134,7 @@ func pair_crossover(enemy_a,enemy_b):
 	return genome
 	
 func apply_mutation(genome,chance,frame_size):
-	if rand_range(0,1) <= chance:
+	if rand_range(0,1) <= 0.01:
 		genome["core"] = Vector2(randi()%frame_size,randi()%frame_size)
 	for x in range(genome["body"].size()):
 		for y in range(genome["body"][x].size()):
@@ -146,7 +148,7 @@ func select_pair(enemy_list, total_fitness):
 		var list = enemy_list.duplicate()
 		enemy1 = tournament_selection(enemy_list,total_fitness)
 		list.erase(enemy1)
-		enemy2 = tournament_selection(enemy_list,total_fitness)
+		enemy2 = tournament_selection(list,total_fitness)
 	else:
 		var list = enemy_list.duplicate()
 		enemy1 = roulette_wheel_selection(enemy_list,total_fitness)

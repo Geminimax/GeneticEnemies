@@ -14,7 +14,7 @@ var current_component = 0
 var core_position 
 var component_count = 0
 var core_instance
-var velocity = Vector2(0,45)
+var velocity = Vector2(0,30)
 var time_alive = 0
 var alive = true
 var distances = []
@@ -25,6 +25,7 @@ var bullet_range_multi = 1
 var bullet_speed_multi = 1
 var cycle_speed_multi = 1
 var active_components = []
+var times_hit = 0
 export (int) var frame_size = 4
 
 func init_matrix(width,height):
@@ -114,12 +115,12 @@ func on_projectile_destroy(minimum_distance):
 	distances.sort()
 	
 func get_score():
-	var score = time_alive_score() + proj_distance_score() + alive_components_score()
+	var score = time_alive_score() + proj_distance_score() + alive_components_score() 
 	
 	return score
 
 func alive_components_score():
-	return (component_list.size() / component_count) * COMPONENT_COUNT_SCORE_WEIGTH
+	return (component_list.size() / component_count) * COMPONENT_COUNT_SCORE_WEIGTH * (1 - 1/max(pow(times_hit,3),1))
 	
 func proj_distance_score():
 	var total_value = 0
@@ -153,6 +154,21 @@ func _on_GlobalCooldown_timeout():
 	activate_next_component()
 func on_cooldown():
 	activate_next_component()
+func get_component_concentration():
+	var concentration = {}
+	var value
+	for i in range(frame_size):
+		var line = []
+		for j in range(frame_size):
+			if components[i][j] == null:
+				value = -1
+			else:
+				value = (components[i][j])
+			if concentration.has(value):
+					concentration[value] += 1
+			else:
+				concentration[value] = 1
+	return concentration
 	
 func activate_next_component():
 	if !active_components.empty():
