@@ -8,6 +8,9 @@
 [node name="EnemySpawner" parent="." instance=ExtResource( 1 )]
 position = Vector2( 109.503, -4.2605 )
 
+[node name="SpawnCooldown" parent="EnemySpawner" index="0"]
+wait_time = 5.0
+
 [node name="AimingAIController" parent="." instance=ExtResource( 2 )]
 position = Vector2( 79.6107, 252.764 )
 target_range = 6.0
@@ -20,5 +23,7 @@ wait_time = 0.4
 
 [node name="ReactionTimer" parent="AimingAIController" index="2"]
 wait_time = 0.4
+
+[editable path="EnemySpawner"]
 
 [editable path="AimingAIController"]

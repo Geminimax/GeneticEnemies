@@ -42,4 +42,7 @@ func shoot():
 	proj.position = pos.global_position 
 
 func _on_Area2D_area_entered(area):
-	damage_taken += area.get_parent().damage
+	on_collision()
+
+func on_collision():
+	damage_taken += 1

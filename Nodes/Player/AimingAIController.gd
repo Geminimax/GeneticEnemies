@@ -39,7 +39,7 @@ func _physics_process(delta):
 			moving_direction = 0
 			
 			
-		if(target_core.global_position.y > body.global_position.y - 32):
+		if(target_core.global_position.y > body.global_position.y - 42):
 			target = get_next_target()
 	elif searching_target == false:
 		moving_direction = 0

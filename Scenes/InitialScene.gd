@@ -9,6 +9,7 @@ var aiming_test = "res://Scenes/TestMain.tscn"
 var spawner
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	seed(498321)
 	$Control/Panel/VBoxContainer/MutationRateValue.bbcode_text ="[center]" +  str($Control/Panel/VBoxContainer/MutationRate.value)
 	initialize_selection_button()
 	initialize_ai_button()
@@ -36,7 +37,7 @@ func _on_MutationRate_value_changed(value):
 
 func _process(delta):
 	if Input.is_action_just_pressed("save"):
-		var directory = "/home/hiago.alves/Desktop/POC"
+		var directory = "C:\\Users\\Pichau\\Desktop\\PocTests\\"
 		var filename_id = "test_" + str(OS.get_unix_time()) + ".txt"
 		spawner.output_data(directory + filename_id)
 func _on_Start_pressed():

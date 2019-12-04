@@ -25,6 +25,9 @@ func deactivate():
 
 
 func _on_Area2D_area_entered(area):
+	on_collision()
+
+func on_collision():
 	hp -= 1
 	frame.times_hit += 1
 	if hp <= 0:

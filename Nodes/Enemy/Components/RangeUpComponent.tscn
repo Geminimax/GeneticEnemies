@@ -4,7 +4,7 @@
 [ext_resource path="res://Sprites/longer-range..png" type="Texture" id=2]
 [ext_resource path="res://Nodes/Enemy/StatComponentBehaviour.tscn" type="PackedScene" id=3]
 
-[node name="RangeUpComponent" instance=ExtResource( 1 )]
+[node name="RangeUpComponent" index="0" instance=ExtResource( 1 )]
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )

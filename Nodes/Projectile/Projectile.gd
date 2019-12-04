@@ -5,12 +5,21 @@ var velocity
 export (int) var damage = 1
 
 func _ready():
+	$rc.collision_mask = $Hitbox.collision_mask
 	set_as_toplevel(true)
 	emit_signal("projectile_spawn")
 	pass
 
 func move(delta):
-	global_position += velocity * delta
+	var movement = velocity * delta
+	$rc.cast_to = movement
+	$rc.force_raycast_update()
+	if $rc.is_colliding():
+		#global_position = $rc.get_collision_point() 
+		$rc.get_collider().get_parent().on_collision()
+		on_collision()
+	else:
+		global_position += movement
 
 func _physics_process(delta):
 	move(delta)

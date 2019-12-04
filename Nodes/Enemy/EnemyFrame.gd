@@ -52,6 +52,7 @@ func add_core(x,y):
 	
 func add_component(x,y, instance):
 	if(Vector2(x,y) == core_position):
+		components[int(x)][int(y)] = instance.id_component
 		return
 	
 	$Components.add_child(instance)

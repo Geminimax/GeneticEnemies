@@ -20,7 +20,7 @@ script = ExtResource( 1 )
 velocity = Vector2( 200, 0 )
 
 [node name="SpawnCooldown" type="Timer" parent="."]
-wait_time = 2.1
+wait_time = 6.5
 autostart = true
 
 [node name="EnemyBuilder" parent="." instance=ExtResource( 2 )]

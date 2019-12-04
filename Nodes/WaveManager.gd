@@ -19,7 +19,7 @@ var selection = selectionType.TOURNAMENT
 var average_score_for_generation = []
 var concentration = {}
 func start():
-	Engine.time_scale = 3.0
+	Engine.time_scale = 5.0
 	print("Starting run")
 	print("Mutation chance is :" + str(mutation_chance))
 	print("Population size:" + str(ENEMIES_PER_GENERATION))
@@ -134,7 +134,7 @@ func pair_crossover(enemy_a,enemy_b):
 	return genome
 	
 func apply_mutation(genome,chance,frame_size):
-	if rand_range(0,1) <= 0.01:
+	if rand_range(0,1) <= chance:
 		genome["core"] = Vector2(randi()%frame_size,randi()%frame_size)
 	for x in range(genome["body"].size()):
 		for y in range(genome["body"][x].size()):
